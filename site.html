@@ -7,15 +7,6 @@
             padding-bottom: 40px;
         }
 
-        /* Custom container */
-        .container-narrow {
-            margin: 0 auto;
-            max-width: 700px;
-        }
-        .container-narrow > hr {
-            margin: 30px 0;
-        }
-
         .center {
             margin-left: auto;
             margin-right: auto;
@@ -34,6 +25,7 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Corben', Georgia, Times, serif;
         }
+
         p, div, option, input {
             font-family: 'Nobile', Helvetica, Arial, sans-serif;
         }
@@ -48,7 +40,7 @@
             req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             req.send(null);
 
-            req.onreadystatechange=(e)=>{
+            req.onreadystatechange=function() {
                 var boms = req.responseText.split("\"");
                 const bomnums = [];
                 var i = 0;
@@ -79,7 +71,6 @@
                     var txt = "";
                     if (req.readyState==4 && req.status==200) {
                         obj = JSON.parse(this.responseText);
-                        //document.write(JSON.stringify(obj));
                         txt += "<table border='1' class='center'>";
                         txt += "<colgroup></colgroup><tr><th>ID</th><th>BOM ID</th>";
                         txt += "<th>Model</th><th>UUID</th><th>Created At</th>";
