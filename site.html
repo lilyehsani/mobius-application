@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style type="text/css">
+        body {
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+
+        /* Custom container */
+        .container-narrow {
+            margin: 0 auto;
+            max-width: 700px;
+        }
+        .container-narrow > hr {
+            margin: 30px 0;
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main marketing message and sign up button */
+        .jumbotron {
+            margin: 60px 0;
+            text-align: center;
+        }
+        .jumbotron h1 {
+            font-size: 72px;
+            line-height: 1;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Corben', Georgia, Times, serif;
+        }
+        p, div, option, input {
+            font-family: 'Nobile', Helvetica, Arial, sans-serif;
+        }
+        </style>
+        <div class="jumbotron">
+            <h1>Welcome!</h1>
+            <p class="lead"><h2>Available Bills of Materials (or BOMs):</h2></p>
+        <script>
+            var link = "https://5f996efe50d84900163b8a42.mockapi.io/api/v1/bom/";
+            var req = new XMLHttpRequest();
+            req.open("GET", link, true);
+            req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            req.send(null);
+
+            req.onreadystatechange=(e)=>{
+                var boms = req.responseText.split("\"");
+                const bomnums = [];
+                var i = 0;
+                var j = 0;
+                while (i < boms.length) {
+                    if (!isNaN(boms[i])) {
+                        bomnums[j] = boms[i];
+                        j++;
+                    }
+                    i++;
+                }
+                document.getElementById("BOMs").innerHTML = bomnums;
+            }
+        </script>
+    </head>
+    <body>
+        <p id="BOMs"></p>
+        <script>
+            function printBOM() {
+                var id = document.getElementById("bomSelect").value;
+                var link = "https://5f996efe50d84900163b8a42.mockapi.io/api/v1/bom/" + id + "/bomitem";
+                var req = new XMLHttpRequest();
+                req.open("GET", link, true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send(null);
+
+                req.onreadystatechange=function() {
+                    var txt = "";
+                    if (req.readyState==4 && req.status==200) {
+                        obj = JSON.parse(this.responseText);
+                        //document.write(JSON.stringify(obj));
+                        txt += "<table border='1' class='center'>";
+                        txt += "<colgroup></colgroup><tr><th>ID</th><th>BOM ID</th>";
+                        txt += "<th>Model</th><th>UUID</th><th>Created At</th>";
+                        txt += "<th>Updated At</th><th>Quantity</th><th>Item Unit Cost</th>";
+                        txt += "<th>Specific Part</th></tr>";
+                        for (x in obj) {
+                            model = (obj[x].model);
+                            uuid = obj[x].uuid;
+                            txt += "<tr><td>" + obj[x].id + "</td><td>"
+                                              + model + "</td><td>"
+                                              + obj[x].bomId + "</td><td>"
+                                              + obj[x].uuid + "</td><td>"
+                                              + obj[x].created_at + "</td><td>"
+                                              + obj[x].updated_at + "</td><td>"
+                                              + obj[x].quantity + "</td><td>"
+                                              + obj[x].item_unit_cost + "</td><td>"
+                                              + obj[x].specific_part + "</td></tr>";
+                        }
+                        txt += "</table>"
+                        document.getElementById("demo").innerHTML = txt;
+                    }
+                }
+            }
+        </script>
+        <form>
+            <p>Choose a BOM:</p>
+            <select id="bomSelect" style="width: 4em; height: 2em">
+                <option>1001</option>
+                <option>1002</option>
+                <option>1003</option>
+                <option>1004</option>
+            </select>
+            <input type="button" onclick="printBOM()" value="Submit" style="width: 5em; height: 2em">
+            <p id="demo"></p>
+        </form>
+    </body>
+</html>
