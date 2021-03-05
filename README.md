@@ -6,3 +6,5 @@
 - https://stackoverflow.com/questions/3010840/loop-through-an-array-in-javascript
 - https://getbootstrap.com/2.3.2/
 - https://getbootstrap.com/2.3.2/examples/marketing-narrow.html
+- https://www.w3schools.com/js/js_json_html.asp
+- https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_col_test
